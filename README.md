@@ -1,4 +1,4 @@
-자바  개념 정리
+## 자바  개념 정리
 
 - 컬렉션
     - int[]와 같은 배열과 다르게 가변 배열임 크기가 동적으로 증가가능
@@ -28,7 +28,6 @@
             al3.clear();
     ```
 
-  ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8991ba56-626b-44ef-a1f7-7c6be997a886/Untitled.png)
 
 
 - static
@@ -101,41 +100,46 @@
         .forEach(System.out::println);
         ```
 
-- filter
-    - if문이라고 생각하면 될듯.
-    - 람다식의 리턴값은 boolean. true면 다음 단계 진행, false면 버려짐
+    - filter
+        - if문이라고 생각하면 될듯.
+        - 람다식의 리턴값은 boolean. true면 다음 단계 진행, false면 버려짐
+
+        ```
+        classes.stream()
+        	.filter(c->c.getTitle().startWith("spring"))
+        	.forEach(c->System.out.println(c.getId));
+        
+        classes.stream()
+        	.filter(Predicate.not(OnlineClass::isClosed))
+        	.forEach(c->System.out.println(c.getId));
+        ```
+
+        - 예) 이름이 3글자 이상인 데이터만 새로운 스트림으로 변경하기
+    - map
+        - stream을 우리가 원하는 모양의 새로운 스트림으로 변환
+            - 예) 각각의 File에서 String name만 새로운 스트림으로
+            - 예) string 타입 요소를 짤라서 새로운 스트림으로
+
+        ```
+         map(File::getName)
+         map(s->s.subString(3))
+        ```
+
+    - limit, skip
+    - 예) 최대 5개의 요소가 담긴 스트림을 리턴한다.
+    - 예) 앞에서 3개를 뺀 나머지 스트림을 리턴한다.
 
     ```
-    classes.stream()
-    	.filter(c->c.getTitle().startWith("spring"))
-    	.forEach(c->System.out.println(c.getId));
-    
-    classes.stream()
-    	.filter(Predicate.not(OnlineClass::isClosed))
-    	.forEach(c->System.out.println(c.getId));
+    Stream.iterate(10, i->i+1)
+    		.skip(10)
+            .limit(10)
+            .forEach(System.out::println)
     ```
 
-    - 예) 이름이 3글자 이상인 데이터만 새로운 스트림으로 변경하기
-- map
-    - stream을 우리가 원하는 모양의 새로운 스트림으로 변환
-        - 예) 각각의 File에서 String name만 새로운 스트림으로
-        - 예) string 타입 요소를 짤라서 새로운 스트림으로
-
-    ```
-     map(File::getName)
-     map(s->s.subString(3))
-    ```
-
-- limit, skip
-- 예) 최대 5개의 요소가 담긴 스트림을 리턴한다.
-- 예) 앞에서 3개를 뺀 나머지 스트림을 리턴한다.
-
-```
-Stream.iterate(10, i->i+1)
-		.skip(10)
-        .limit(10)
-        .forEach(System.out::println)
-```
+    - collect
+        - 스트림을 원하는 자료형으로 변환
+        - `.collect(Collectors.*toList*());`
+        - `.collect(Collectors.*toSet*());`
 
 - **Optional<T> T에 각종 타입**
     - null이 올 수 있는 값을 감싸는 Wrapper 클래스
